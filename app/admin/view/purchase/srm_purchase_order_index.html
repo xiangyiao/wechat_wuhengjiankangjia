@@ -1,0 +1,118 @@
+{extend name="main" /}
+
+{block name="body"}
+{include file="breadcrumb" /}
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class=" layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" method="get">
+                <input type="hidden" name="bcid" value="{:input('bcid')}"><!--保留当前位置的bcid参数-->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">采购单号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="apply_purchase_order" id="apply_purchase_order" value="{:input('apply_purchase_order')}"  class="layui-input"  placeholder="搜索采购单号">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">采购单状态</label>
+                        <div class="layui-input-inline">
+                            <select name="verify_status" lay-verify="required" id="verify_status">
+                                <option value="5">全部</option>
+                                <option value="1">未审核</option>
+                                <option value="2">审核通过</option>
+                                <option value="0">审核驳回</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">采购审核人</label>
+                        <div class="layui-input-inline">
+                            <select name="verify_username" lay-verify="required" lay-search="" id="verify_username">
+                                <option value="">直接选择或搜索选择</option>
+                                {foreach name = "user_list" item = "value" }
+                                <option value="{$value.uid}">{$value.nickname}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">采购创建人</label>
+                        <div class="layui-input-inline">
+                            <select name="create_username" lay-verify="required" lay-search="" id="create_username">
+                                <option value="">直接选择或搜索选择</option>
+                                {foreach name = "user_list" item = "value" }
+                                <option value="{$value.uid}">{$value.nickname}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>采购单号</b></th>
+                    <th><b>采购总价格</b></th>
+                    <th><b>采购数量</b></th>
+                    <th><b>创建人</b></th>
+                    <th><b>创建时间</b></th>
+                    <th><b>审核人</b></th>
+                    <th><b>一级审核状态</b></th>
+                    <th><b>二级审核状态</b></th>
+                    <th><b>操作</b></th>
+                </tr>
+
+                <tbody>
+                {foreach name="list" item="vo"}
+                <tr>
+                    <td>{$vo.purchase_order}</td>
+                    <td>{$all_price[$key]}</td>
+                    <td>{$all_num[$key]}</td>
+                    <td>{$user_info[$key]}</td>
+                    <td>{$vo.create_date}</td>
+                    <td>{$verify_info[$key]}</td>
+                    {if($vo.verify_status == '0')}
+                    <td style="background-color: red">{$verify_name[$key]}</td>
+                    {/if}
+                    {if($vo.verify_status == '2')}
+                    <td style="background-color: greenyellow">{$verify_name[$key]}</td>
+                    {/if}
+                    {if($vo.verify_status == '1')}
+                    <td>{$verify_name[$key]}</td>
+                    {/if}
+
+                    {if($vo.verify_second_status == '0')}
+                    <td style="background-color: red">{$verify_second_name[$key]}</td>
+                    {/if}
+                    {if($vo.verify_second_status == '2')}
+                    <td style="background-color: greenyellow">{$verify_second_name[$key]}</td>
+                    {/if}
+                    {if($vo.verify_second_status == '1')}
+                    <td>{$verify_second_name[$key]}</td>
+                    {/if}
+
+                    <td>
+                        <a href="{:url('srm_purchase_order_verify',array('purchase_order'=>$vo['purchase_order']))}" data-width="600px" data-height="650px" title="{$vo.apply_purchase_order}--审核采购单" class="layui-btn layui-btn-normal layui-btn-xs xn_open">
+                            <i class="layui-icon layui-icon-edit"></i>采购单
+                        </a>
+                        <a href="{:url('srm_purchase_order_print',array('purchase_order'=>$vo['purchase_order']))}" data-width="600px" data-height="650px" title="{$vo.apply_purchase_order}--审核采购单" class="layui-btn layui-btn-normal layui-btn-xs" target="_blank">
+                            <i class="layui-icon layui-icon-edit"></i>采购单打印页面
+                        </a>
+                    </td>
+
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pages">{$list|raw}</div>
+</div>
+{/block}

@@ -1,0 +1,50 @@
+{extend name="main" /}
+
+{block name="body"}
+{include file="breadcrumb" /}
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class=" layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" method="get">
+                <input type="hidden" name="bcid" value="{:input('bcid')}"><!--保留当前位置的bcid参数-->
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>物料名称</b></th>
+                    <th><b>物料编码(系统自动生成不允许修改)</b></th>
+                    <th><b>是否启用</b></th>
+                    <th style="padding: 0 15px;line-height: 40px;"><b>操作</b> <span style="float: right"><a href="{:url('materials_first_class_category_add')}" data-width="600px" data-height="450px" class="layui-btn layui-btn-sm xn_open" title="添加物料类目">添加物料类目</a></span> </th>
+                </tr>
+
+                <tbody>
+                {foreach name="list" item="vo"}
+                <tr>
+                    <td>{$vo.category_name}</td>
+                    <td>{$vo.category_node}</td>
+                    {if($vo.status == '0')}
+                    <td style="background-color: red">{$vo.status_name}</td>
+                    {/if}
+                    {if($vo.status == '1')}
+                    <td style="background-color: greenyellow">{$vo.status_name}</td>
+                    {/if}
+                    <td>
+                        <a href="{:url('materials_first_class_category_edit',array('category_id'=>$vo['category_id']))}" data-width="600px" data-height="650px" title="{$vo.category_name}--编辑" class="layui-btn layui-btn-normal layui-btn-xs xn_open">
+                            <i class="layui-icon layui-icon-edit"></i>编辑
+                        </a>
+                        <a href="{:url('materials_subcategory_index',array('category_node'=>$vo['category_node']))}" data-width="600px" data-height="450px" class="layui-btn layui-btn-xs xn_open layui-btn-warm" title="{$vo.category_name}--子类目列表">
+                            当前分类下的子类目列表
+                        </a>
+                        <a href="{:url('materials_subcategory_add',array('category_node'=>$vo['category_node']))}" data-width="600px" data-height="450px" class="layui-btn layui-btn-xs xn_open" title="添加子类目">
+                            <i class="layui-icon layui-icon-addition"></i>添加子类目
+                        </a>
+                    </td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,132 @@
+{extend name="iframe" /}
+
+{block name="body"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list">
+            <form action="{:request()->url()}" method="post" class="xn_ajax" data-type="open">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">供应商名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="custom_name" lay-verify="required" placeholder="供应商名称" autocomplete="off" class="layui-input" value="{$data.custom_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">法人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="legal_person" lay-verify="required" placeholder="法人" autocomplete="off" class="layui-input" value="{$data.legal_person}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="contact" lay-verify="required" placeholder="联系人" autocomplete="off" class="layui-input" value="{$data.contact}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="custom_phone" lay-verify="required" placeholder="电话" autocomplete="off" class="layui-input" value="{$data.custom_phone}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">公司地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="company_address" lay-verify="required" placeholder="公司地址" autocomplete="off" class="layui-input" value="{$data.company_address}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">工厂地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="factory_address" lay-verify="required" placeholder="工厂地址" autocomplete="off" class="layui-input" value="{$data.factory_address}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">主要产品</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="first_level_industry" lay-verify="required" placeholder="主要产品" autocomplete="off" class="layui-input" value="{$data.first_level_industry}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">品质认证标准</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="quality_cognition_standard" lay-verify="required" placeholder="品质认证标准" autocomplete="off" class="layui-input" value="{$data.quality_cognition_standard}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" lay-submit class="layui-btn">保存</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //自定义验证规则
+        form.verify({
+            custom_name: function(value){
+                if(value.length < 3){
+                    return '供应商名称不能为空';
+                }
+            }
+            ,legal_person: function(value){
+                if(value.length < 3){
+                    return '法人不能为空';
+                }
+            }
+            ,custom_phone: function(value){
+                if(value.length < 3){
+                    return '电话不能为空';
+                }
+            }
+            ,company_address: function(value){
+                if(value.length < 3){
+                    return '公司地址不能为空';
+                }
+            }
+            ,factory_address: function(value){
+                if(value.length < 3){
+                    return '工厂地址不能为空';
+                }
+            }
+            ,first_level_industry: function(value){
+                if(value.length < 3){
+                    return '主要产品不能为空';
+                }
+            }
+            ,quality_cognition_standard: function(value){
+                if(value.length < 3){
+                    return '品牌认证不能为空';
+                }
+            }
+
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#company_create_dates' ,//指定元素
+            done: function(value, date, endDate){
+            }
+        });
+        laydate.render({
+            elem: '#company_create_dates',
+            position: 'static',
+            done: function(value, date, endDate){
+//                alert(value); //得到日期生成的值，如：2017-08-18
+                $('#company_create_date').val( value);
+
+            }
+        });
+
+    });
+</script>
+{/block}

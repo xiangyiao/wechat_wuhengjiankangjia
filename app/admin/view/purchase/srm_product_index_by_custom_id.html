@@ -1,0 +1,36 @@
+{extend name="iframe" /}
+
+{block name="body"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list">
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>产品名称</b></th>
+                    <th><b>产品规格</b></th>
+                    <th><b>产品价格</b></th>
+                    <th><b>产品单位</b></th>
+                    <th><b>创建人</b></th>
+                    <th><b>创建时间</b></th>
+                </tr>
+
+                <tbody>
+                {foreach name="list" item="vo"}
+                <tr>
+                    <td>{$vo.product_name}</td>
+                    <td>{$vo.product_guige}</td>
+                    <td>{$vo.product_price}</td>
+                    <td>{$vo.product_unit}</td>
+                    <td>{$user_info[$key]}</td>
+                    <td>{$vo.create_date}</td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+        <div class="pages">{$list|raw}</div>
+    </div>
+</div>
+{/block}

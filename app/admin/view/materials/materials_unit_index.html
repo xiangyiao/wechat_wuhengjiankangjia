@@ -1,0 +1,42 @@
+{extend name="main" /}
+
+{block name="body"}
+{include file="breadcrumb" /}
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class=" layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" method="get">
+                <input type="hidden" name="bcid" value="{:input('bcid')}"><!--保留当前位置的bcid参数-->
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>单位名称</b></th>
+                    <th><b>是否启用</b></th>
+                    <th style="padding: 0 15px;line-height: 40px;"><b>操作</b> <span style="float: right"><a href="{:url('materials_unit_add')}" data-width="600px" data-height="450px" class="layui-btn layui-btn-sm xn_open" title="添加物料单位">添加物料单位</a></span> </th>
+                </tr>
+
+                <tbody>
+                {foreach name="list" item="vo"}
+                <tr>
+                    <td>{$vo.unit_name}</td>
+                    {if($vo.status == '0')}
+                    <td style="background-color: red">{$vo.status_name}</td>
+                    {/if}
+                    {if($vo.status == '1')}
+                    <td style="background-color: greenyellow">{$vo.status_name}</td>
+                    {/if}
+                    <td>
+                        <a href="{:url('materials_unit_edit',array('unit_id'=>$vo['unit_id']))}" data-width="600px" data-height="650px" title="{$vo.unit_name}--编辑" class="layui-btn layui-btn-normal layui-btn-xs xn_open">
+                            <i class="layui-icon layui-icon-edit"></i>编辑
+                        </a>
+                    </td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{/block}

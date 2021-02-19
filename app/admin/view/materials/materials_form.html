@@ -1,0 +1,101 @@
+{extend name="iframe" /}
+
+{block name="body"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list">
+            <form action="{:request()->url()}" method="post" class="xn_ajax" data-type="open">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">物料名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="materials_name" lay-verify="required" placeholder="物料名称" autocomplete="off" class="layui-input" value="{$data.unit_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">物料主类目</label>
+                    <div class="layui-input-block">
+                        <select name="category_node" lay-verify="required" lay-filter="category">
+                            <option value="">请选择主类目</option>
+                            {foreach name="category_list" item="vo"}
+                            <option value="{$vo.category_node}" {if condition="$pid eq $vo['category_node']"}selected{/if} >{$vo.category_node}：{$vo.category_name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">物料子类目</label>
+                    <div class="layui-input-block">
+                        <select name="subcategory_number" lay-verify="required">
+                            <option value="">请选择子类目</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">物料单位</label>
+                    <div class="layui-input-block">
+                        <select name="materials_unit" lay-verify="required">
+                            <option value="">请选择物料单位</option>
+                            {foreach name="units_list" item="vo"}
+                            <option value="{$vo.unit_id}" {if condition="$pid eq $vo['unit_id']"}selected{/if} >{$vo.unit_name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">物料标签</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="materials_tag" lay-verify="required" placeholder="物料标签" autocomplete="off" class="layui-input" value="{$data.materials_tag}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否启用</label>
+                    <label class="layui-form-label" style="width: 150px;color: red;margin-left: -37px;">默认都是未启用状态</label>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">物料规则</label>
+                    <label class="layui-form-label" style="width: 350px;color: red;margin-left: -57px;">物料新建完成之后类目将不允许修改，请谨慎选择</label>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" lay-submit class="layui-btn">保存</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on('select(category)', function(data){
+            var category_node=data.elem.value;
+            $.ajax({
+                type: 'POST',
+                url: "category_subcategory_index",
+                data: {category_node:category_node},
+                dataType:  'json',
+                success:function(e){
+                    console.log(e.data);
+                    //empty() 方法从被选元素移除所有内容
+                    $("select[name='subcategory_number']").empty();
+                    var html = "<option value=''>请选择子类目</option>";
+                    //var html = '';
+                    $(e.data).each(function (v, k) {
+                        html += "<option value='" + k.subcategory_number + "'>" + k.subcategory_number+'：' + k.subcategory_name + "</option>";
+                    });
+                    //把遍历的数据放到select表里面
+                    $("select[name='subcategory_number']").append(html);
+                    //从新刷新了一下下拉框
+                    form.render('select');      //重新渲染
+                }
+            });
+        });
+
+    });
+
+</script>
+{/block}

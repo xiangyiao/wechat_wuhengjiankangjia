@@ -1,0 +1,30 @@
+{extend name="iframe" /}
+
+{block name="body"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list">
+            <form action="{:request()->url()}" method="post" class="xn_ajax" data-type="open">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单位名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="unit_name" lay-verify="required" placeholder="单位名称" autocomplete="off" class="layui-input" value="{$data.unit_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否启用</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-verify="required" lay-filter="status" name="status" lay-skin="switch" lay-text="启用|停用" value="1" {if condition="$data['status'] eq 1"}checked{/if} >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" lay-submit class="layui-btn">保存</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}

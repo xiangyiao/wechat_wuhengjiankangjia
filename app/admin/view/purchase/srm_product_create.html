@@ -1,0 +1,88 @@
+{extend name="main" /}
+{block name="body"}
+{include file="breadcrumb" /}
+<div class="layui-form layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">录入产品基本信息</div>
+                <div class="layui-card-body" pad15="">
+                    <form action="{:request()->url()}" method="post" class="xn_ajax">
+                        <div class="layui-form" wid100="" lay-filter="">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">产品名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="product_name" id="product_name"  value="" class="layui-input"  lay-verify="product_name">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">产品规格</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="product_guige" id="product_guige" value="" class="layui-input" lay-verify="product_guige">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">产品价格</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="product_price"  id="product_price"  value="" class="layui-input" lay-verify="product_price">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">产品单位</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="product_unit" id="product_unit" value="" class="layui-input" lay-verify="product_unit">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">产品备注</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="product_remark" id="product_remark" value="" class="layui-input" lay-verify="product_remark">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit="" lay-filter="set_website">确认保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //自定义验证规则
+        form.verify({
+            product_name: function(value){
+                if(value.length < 1){
+                    return '产品名称不能为空';
+                }
+            }
+            ,product_guige: function(value){
+                if(value.length < 1){
+                    return '产品规格不能为空';
+                }
+            }
+            ,product_price: function(value){
+                if(value.length < 1){
+                    return '产品价格不能为空';
+                }
+            }
+            ,product_unit: function(value){
+                if(value.length < 1){
+                    return '产品单位不能为空';
+                }
+            }
+
+        });
+    });
+</script>
+{/block}

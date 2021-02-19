@@ -1,0 +1,48 @@
+{extend name="iframe" /}
+
+{block name="body"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list">
+            <form action="{:request()->url()}" method="post" class="xn_ajax" data-type="open">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">产品名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="product_name" lay-verify="required" placeholder="产品名称" autocomplete="off" class="layui-input" value="{$data.product_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">产品规格</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="product_guige" lay-verify="required" placeholder="产品规格" autocomplete="off" class="layui-input" value="{$data.product_guige}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">产品价格</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="product_price" lay-verify="required" placeholder="产品价格" autocomplete="off" class="layui-input" value="{$data.product_price}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">产品单位</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="product_unit" lay-verify="required" placeholder="产品单位" autocomplete="off" class="layui-input" value="{$data.product_unit}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">产品备注</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="product_remark" lay-verify="required" placeholder="产品备注" autocomplete="off" class="layui-input" value="{$data.product_remark}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" lay-submit class="layui-btn">保存</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}

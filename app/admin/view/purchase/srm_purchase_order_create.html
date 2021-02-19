@@ -1,0 +1,349 @@
+{extend name="main" /}
+{block name="body"}
+{include file="breadcrumb" /}
+<div style="font-size: 25px; margin-left: 13px;margin-top: 5px;">待采购物料列表</div>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class=" layui-card-header layuiadmin-card-header-auto">
+            <input style="display: none" id="materials_id" name="materials_id">
+            <form class="layui-form" method="get">
+                <input type="hidden" name="bcid" value="{:input('bcid')}"><!--保留当前位置的bcid参数-->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">物料名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="materials_name" id="materials_name" value="{:input('materials_name')}"  class="layui-input"  placeholder="搜索物料名称">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>申购单号</b></th>
+                    <th><b>物料名称</b></th>
+                    <th><b>物料编号</b></th>
+                    <th><b>主类目</b></th>
+                    <th><b>子类目</b></th>
+                    <th><b>价格</b></th>
+                    <th><b>数量</b></th>
+                    <th><b>最近一次使用的供应商</b></th>
+                    <th><b>联系人</b></th>
+                    <th><b>联系电话</b></th>
+                    <th><b>收货地址</b></th>
+                    <th><b>操作</b></th>
+                </tr>
+
+                <tbody>
+                {foreach name="list" item="vo"}
+                <tr>
+                    <td>{$vo.apply_purchase_order}</td>
+                    <td>{$vo.materials_name}</td>
+                    <td>{$vo.materials_number}</td>
+                    <td>{$vo.category_node}：{$category_name[$key]}</td>
+                    <td>{$vo.subcategory_number}：{$subcategory_name[$key]}</td>
+                    <td>{$vo.product_price}</td>
+                    <td>{$vo.num}</td>
+                    <td> <a href="{:url('srm_custom_product_bind_sort',array('materials_id'=>$vo['materials_id']))}" class="layui-btn layui-btn-xs xn_open"   onclick="fuzhi({$vo.materials_id})"  title="{$vo.materials_name}--设置供应商">
+                        {$custom_product_bind_info[$key]}
+                    </a></td>
+                    <td>
+                        {$vo.contact}
+                    </td>
+                    <td>
+                        {$vo.contact_mobile}
+                    </td>
+                    <td>
+                        {$vo.address}
+                    </td>
+                    <td>
+                        <button onclick="srm_product_temp_add({$vo['apply_purchase_detail_id']})"> 加入采购列表</button>
+                    </td>
+
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pages">{$list|raw}</div>
+</div>
+<hr>
+<div style="font-size: 25px; margin-left: 13px;margin-top: 5px;">采购列表</div>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class=" layui-card-header layuiadmin-card-header-auto">
+
+            <form class="layui-form" method="get">
+                <input type="hidden" name="bcid" value="{:input('bcid')}"><!--保留当前位置的bcid参数-->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">采购物料名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="materials_name_temp" id="materials_name_temp" value="{:input('materials_name_temp')}"  class="layui-input"  placeholder="搜索产品名称">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>采购物料名称</b></th>
+                    <th><b>物料编号</b></th>
+                    <th><b>主类目</b></th>
+                    <th><b>子类目</b></th>
+                    <th><b>采购物料单价</b></th>
+                    <th><b>采购数量</b></th>
+                    <th><b>操作</b></th>
+                </tr>
+
+                <tbody>
+                {foreach name="temp_list" item="vo"}
+                <tr>
+                    <td>{$vo.materials_name}</td>
+                    <td>{$vo.materials_number}</td>
+                    <td>{$vo.category_node}：{$vo.category_name}</td>
+                    <td>{$vo.subcategory_number}：{$vo.subcategory_name}</td>
+
+                    <td><input type="text" value="{$vo.product_price}"  id="price_{$vo.srm_product_id}"  style="width: 70px;height: 30px;"  onchange="srm_product_temp_price({$vo['srm_product_id']})"></td>
+                    <td>
+                        <input type="number" value="{$vo.num}"  id="num_{$vo.srm_product_id}"  style="width: 70px;height: 30px;"  onchange="srm_product_temp_change({$vo['srm_product_id']})">
+                    </td>
+                    <td>
+                        <a href="{:Url('srm_product_delete',array('srm_product_id'=>$vo['srm_product_id']))}" title="确认要删除【{$vo.materials_name}】吗？" class="layui-btn layui-btn-danger layui-btn-sm xn_delete">
+                            <i class="layui-icon layui-icon-delete"></i>删除
+                        </a>
+                    </td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+        <div class="layui-form" method="get"  style="margin-top: 30px; margin-bottom: 30px;">
+            <div class="layui-form" method="get"  style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="layui-inline">
+                    <label class="layui-form-label">采购一级审核人</label>
+                    <div class="layui-input-inline">
+                        <select name="verify_name" lay-verify="required" lay-search="" id="verify_name">
+                            <option value="">直接选择或搜索选择</option>
+                            {foreach name = "user_list" item = "value" }
+                            <option value="{$value.uid}">{$value.nickname}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form" method="get"  style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="layui-inline">
+                    <label class="layui-form-label">采购二级审核人</label>
+                    <div class="layui-input-inline">
+                        <select name="verify_second_name" lay-verify="required" lay-search="" id="verify_second_name">
+                            <option value="">直接选择或搜索选择</option>
+                            {foreach name = "user_list" item = "value" }
+                            <option value="{$value.uid}">{$value.nickname}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form" method="get"  style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="layui-inline">
+                    <label class="layui-form-label">联系人</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="contact" id="contact" value=""  class="layui-input"  placeholder="联系人" required="required">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form" method="get"  style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="layui-inline">
+                    <label class="layui-form-label">联系人电话</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="contact_mobile" id="contact_mobile" value=""  class="layui-input"  placeholder="联系人电话" required="required">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form" method="get"  style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="layui-inline">
+                    <label class="layui-form-label">收货地址</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="address" id="address" value=""  class="layui-input"  style="width: 500px;" placeholder="收货地址" required="required">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">到货日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" id="arrival_date" name="arrival_date" placeholder="年-月-日" required="required">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form" method="get"  style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="layui-inline">
+                    <label class="layui-form-label">申购备注</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="remark" id="remark" value=""  class="layui-input"  style="width: 500px;height: 200px;" placeholder="申购备注">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="submit" lay-submit class="layui-btn" onclick="srm_product_temp_save();">保存采购单</button>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+
+
+{/block}
+{block name="js"}
+
+<script>
+    //添加到申购单
+    function srm_product_temp_add(apply_purchase_detail_id){
+        layui.use('layer',function(){
+            var layer = layui.layer;
+            layer.msg('确定加入申购列表？', {
+                time: 10000 ,//2秒自动关闭
+                btn: ['确定', '取消'],
+                yes: function(index){
+                    $.ajax({
+                        url:"purchase_order_temp_add",
+                        data:{'apply_purchase_detail_id':apply_purchase_detail_id},
+                        type:"Post",
+                        dataType:"json",
+                        success:function(data){
+                            layer.msg(data.msg);
+                            location.reload(); //删除成功后再刷新
+                        },
+                        error:function(data){
+                            $.messager.alert('错误',data.msg);
+                        }
+                    });
+                    //layer.close(index);
+                }
+            });
+        });
+    };
+
+    //修改申购数量
+    function srm_product_temp_change(srm_product_id) {
+        var num = $("#num_"+srm_product_id).val();
+        layui.use('layer',function(){
+            $.ajax({
+                url:"srm_product_change",
+                data:{'srm_product_id':srm_product_id,
+                    'num':num },
+                type:"Post",
+                dataType:"json",
+                success:function(data){
+                    console.log(data);
+//                    layer.msg(data.msg);
+//                    location.reload(); //删除成功后再刷新
+                },
+                error:function(data){
+                    $.messager.alert('错误',data.msg);
+                }
+            });
+        });
+    }
+    //记录保存的采购价格
+    function srm_product_temp_price (srm_product_id) {
+        var price = $("#price_"+srm_product_id).val();
+        layui.use('layer',function(){
+            $.ajax({
+                url:"srm_product_price",
+                data:{'srm_product_id':srm_product_id,
+                    'price':price },
+                type:"Post",
+                dataType:"json",
+                success:function(data){
+                    console.log(data);
+//                    layer.msg(data.msg);
+//                    location.reload(); //删除成功后再刷新
+                },
+                error:function(data){
+                    $.messager.alert('错误',data.msg);
+                }
+            });
+        });
+    }
+
+    //保存并生成申购单
+    function srm_product_temp_save() {
+        $verify_username = $("#verify_name").val().toString(); //审核人取值
+        $verify_second_name = $("#verify_second_name").val().toString(); //审核人取值
+        $remark = $("#remark").val().toString();
+        $contact = $("#contact").val().toString();
+        $contact_mobile = $("#contact_mobile").val().toString();
+        $address = $("#address").val().toString();
+        $arrival_date = $("#arrival_date").val().toString();
+        if($verify_username.length  == 0){
+            alert('审核人不能为空');
+            return false;
+        }
+        if($contact.length  == 0){
+            alert('联系人不能为空');
+            return false;
+        }
+        if($contact_mobile.length  == 0){
+            alert('联系方式不能为空');
+            return false;
+        }
+        if($address.length  == 0){
+            alert('收货地址不能为空');
+            return false;
+        }
+        console.log($verify_username);
+        layui.use('layer',function(){
+            $.ajax({
+                url:"srm_product_save",
+                data:{'verify_username':$verify_username,
+                    'remark':$remark,
+                    'contact':$contact,
+                    'contact_mobile':$contact_mobile,
+                    'address':$address,
+                    'arrival_date':$arrival_date,
+                    'verify_second_name':$verify_second_name,
+                },
+                type:"Post",
+                dataType:"json",
+                success:function(data){
+                    console.log(data);
+                    alert('提交采购单成功');
+                    location.reload(); //提交成功之后刷新
+                },
+            });
+        });
+    }
+
+    function fuzhi(materials_id) {
+        $("#materials_id").val(materials_id);
+    }
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //常规用法
+        laydate.render({
+            elem: '#arrival_date'
+        });
+
+    });
+</script>
+{/block}

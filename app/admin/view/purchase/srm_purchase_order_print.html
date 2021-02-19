@@ -1,0 +1,121 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list">
+            <form action="{:request()->url()}" method="post" class="xn_ajax" data-type="open">
+                <div style="text-align: center;font-size: 30px;">{$company_name}</div>
+                <div style="text-align: center;font-size: 23px;">采购单</div>
+                <div style="height: 30px;"></div>
+                <div style="width:100%;">
+                    <div style="width: 30%;float: left">
+                        <div style="height: 10px;">供应商名称：{$new_custom_info['custom_name']}</div><br>
+                        <div style="height: 10px;">供应商联系人：{$new_custom_info['contact']}</div><br>
+                        <div style="height: 10px;">供应商联系电话：{$new_custom_info['custom_phone']}</div><br>
+                        <div style="height: 10px;">供应商地址：{$new_custom_info['company_address']}</div><br>
+                    </div>
+                    <div style="width: 30%;float: right">
+                        采购单号：{$srm_apply_purchase_order_info['purchase_order']}
+                    </div>
+                    <div style="width: 30%;float: right">
+                        <div style="height: 10px;">收货联系人：{$srm_apply_purchase_order_info['contact']}</div><br>
+                        <div style="height: 10px;">收货联系电话：{$srm_apply_purchase_order_info['contact_mobile']}</div><br>
+                        <div style="height: 10px;">收货地址：{$srm_apply_purchase_order_info['address']}</div><br>
+                    </div>
+                </div>
+                <input style="display: none"  name="verify_status"  id="verify_status" value="">
+                <input style="display: none"  name="verify_second_status"  id="verify_second_status" value="">
+                <div class="layui-card-body" style="margin-top: 130px;">
+                    <table class="layui-table">
+                        <tr>
+                            <th><b>物料名称</b></th>
+                            <th><b>物料编码</b></th>
+                            <th><b>主类目</b></th>
+                            <th><b>子类目</b></th>
+                            <th><b>产品单位</b></th>
+                            <th><b>采购数量</b></th>
+                            <th><b>物料单价</b></th>
+                            <th><b>物料总价</b></th>
+                        </tr>
+                        <tbody>
+                        {foreach name="list" item="vo"}
+                        <tr>
+                            <td>{$vo.materials_name}</td>
+                            <td>{$vo.materials_number}</td>
+                            <td>{$vo.category_node}：{$vo.category_name}</td>
+                            <td>{$vo.subcategory_number}：{$vo.subcategory_name}</td>
+                            <td>{$vo.materials_unit}</td>
+                            <td>{$vo.num}</td>
+                            <td>{$vo.product_price}</td>
+                            <td>{$vo.product_price_all}</td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    合计金额：{$srm_apply_purchase_order_price}
+                </div>
+                <div style="height: 15px;">
+
+                </div>
+                <div style="word-wrap:break-word;width:90%;height: 100px;">
+                    采购备注：{$srm_apply_purchase_order_info.remark}
+                </div>
+                <div>备注:</div>
+                <div style="word-wrap:break-word;width:100%;">
+                    <span>1、订单回复，供应商应在收到订单后的一个工作日内（除非另有要求）回复交期并签字盖章回传，否则视为接受</span><br>
+                    <span>2、包装：每批产品应按标准保护措施或我司要求进行包装，并随货附详细清单、送货单</span><br>
+                    <span>3、交货：供应商应负责送货至指定地点并承担保险、包装、运输、装卸等一切费用及我司最终验收合格前的产品承担风险</span><br>
+                    <span>4、我司每月对账截至日期为25号，请提供当月对账单和（发票）必须在每月的25号前传真或者Email给我司财务部，逾期我司将推迟到下一个月结算</span><br>
+                    <span>5、违约责任：<br>
+                        1)供应商延迟交货，每逾一日按货款的0.5%向我司支付违约金。导致我司无法按时出货的，还应赔偿实际损失<br>
+                        2)供应商如未按约定的数量及品质要求生产及交货，应赔偿由此给我司造成的一切损失
+                    </span><br>
+
+                </div>
+                <div style="float: right">请确认交货期______</div>
+            </form>
+        </div>
+    </div>
+    <div style="height: 30px;"></div>
+    <table class="layui-table">
+        <tr >
+            <td style="border-left:1px solid #000;width:180px;">创建人</td>
+            <td style="border-left:1px solid #000;width:180px;">{$srm_apply_purchase_order_info['create_nickname']}</td>
+            <td style="border-left:1px solid #000;width:180px;">一级审核人</td>
+            <td style="border-left:1px solid #000;width:180px;">{$srm_apply_purchase_order_info['verify_nickname']}</td>
+            <td style="border-left:1px solid #000;width:180px;">二级审核人</td>
+            <td style="border-left:1px solid #000;width:180px;">{$srm_apply_purchase_order_info['verify_second_nickname']}</td>
+            <td style="border-left:1px solid #000;width:180px;">供应商确认</td>
+            <td style="border-left:1px solid #000;width:180px;"></td>
+        </tr>
+        <tr >
+            <td>创建时间：</td>
+            <td style="border-left:1px solid #000;">{$srm_apply_purchase_order_info['create_date']}</td>
+            <td>一级审核时间：</td>
+            <td style="border-left:1px solid #000;">{$srm_apply_purchase_order_info['verify_date']}</td>
+            <td>二级审核时间：</td>
+            <td style="border-left:1px solid #000;">{$srm_apply_purchase_order_info['verify_second_date']}</td>
+            <td>供应商确认时间：</td>
+            <td style="border-left:1px solid #000;"></td>
+        </tr>
+    </table>
+</div>
+{/block}
+{block name="js"}
+<script>
+    function verifystatus(status) {
+        layui.use('layer',function(){
+            $("#verify_status").attr("value",status);
+        });
+
+    }
+    function verifystatussecond(status) {
+        layui.use('layer',function(){
+            $("#verify_second_status").attr("value",status);
+        });
+
+    }
+</script>
+{/block}

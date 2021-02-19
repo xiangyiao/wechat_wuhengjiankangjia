@@ -1,0 +1,90 @@
+{extend name="main" /}
+{block name="body"}
+{include file="breadcrumb" /}
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class=" layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" method="get">
+                <input type="hidden" name="bcid" value="{:input('bcid')}"><!--保留当前位置的bcid参数-->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">供应商名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="custom_name" id="custom_name" value="{:input('custom_name')}"  class="layui-input"  placeholder="搜索供应商名称">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>供应商名称</b></th>
+                    <th><b>操作</b></th>
+                </tr>
+
+                <tbody>
+                {foreach name="srm_custom" item="vo"}
+                <tr>
+                    <td>{$vo.custom_name}</td>
+                    <td><button onclick="srm_custom_product_bind_sort_save({$vo['custom_id']})"> 关联此供应商</button></td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pages">{$srm_custom|raw}</div>
+</div>
+<div style="font-size: 25px; margin-left: 13px;margin-top: 5px;">最近一次采购的供应商</div>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class=" layui-card-header layuiadmin-card-header-auto">
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>供应商名称</b></th>
+                </tr>
+
+                <tbody>
+                {foreach name="srm_custom_product_bind" item="vo"}
+                <tr>
+                    <td>{$vo.custom_name}</td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{/block}
+{block name='js'}
+
+<script>
+    //保存并生成申购单
+    function srm_custom_product_bind_sort_save(custom_id) {
+        var materials_id = this.parent.$("#materials_id").val();
+
+        layui.use('layer',function(){
+            $.ajax({
+                url:"srm_custom_product_bind_sort_save",
+                data:{'custom_id':custom_id,
+                    'materials_id':materials_id },
+                type:"Post",
+                dataType:"json",
+                success:function(data){
+                    console.log(data);
+                    alert('关联成功');
+                    location.reload(); //提交成功之后刷新
+                },
+            });
+        });
+    }
+</script>
+{/block}

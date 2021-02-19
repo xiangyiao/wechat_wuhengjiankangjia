@@ -1,0 +1,72 @@
+{extend name="main" /}
+
+{block name="body"}
+{include file="breadcrumb" /}
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class=" layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" method="get">
+                <input type="hidden" name="bcid" value="{:input('bcid')}"><!--保留当前位置的bcid参数-->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">供应商名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="custom_name" id="custom_name" value="{:input('custom_name')}"  class="layui-input"  placeholder="搜索供应商名称">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所属公司</label>
+                        <div class="layui-input-inline">
+                            <select name="company_id" lay-verify="required" lay-search="" id="company_id">
+                                <option value="">直接选择或搜索选择</option>
+                                {foreach name = "company_list" item = "value" }
+                                <option value="{$value.company_id}">{$value.company_name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>供应商名称</b></th>
+                    <th><b>所属公司</b></th>
+                    <th><b>创建人</b></th>
+                    <th><b>创建时间</b></th>
+                    <th><b>操作</b></th>
+                </tr>
+
+                <tbody>
+                {foreach name="list" item="vo"}
+                <tr>
+                    <td>{$vo.custom_name}</td>
+                    <td>{$company_info[$key]}</td>
+                    <td>{$user_info[$key]}</td>
+                    <td>{$vo.create_date}</td>
+                    <td>
+                        <a href="{:url('edit',array('custom_id'=>$vo['custom_id']))}" data-width="600px" data-height="650px" title="{$vo.custom_name}--编辑" class="layui-btn layui-btn-normal layui-btn-xs xn_open">
+                            <i class="layui-icon layui-icon-edit"></i>编辑
+                        </a>
+                        <!--<a href="{:url('srm_product_add',array('custom_id'=>$vo['custom_id']))}" class="layui-btn layui-btn-xs xn_open" title="{$vo.custom_name}&#45;&#45;添加供应商产品">-->
+                            <!--添加供应商产品-->
+                        <!--</a>-->
+                        <!--<a href="{:url('srm_product_index_by_custom_id',array('custom_id'=>$vo['custom_id']))}" class="layui-btn layui-btn-xs xn_open" title="{$vo.custom_name}&#45;&#45;供应商所关联的产品列表" style="background-color: black">-->
+                            <!--供应商所关联的产品列表-->
+                        <!--</a>-->
+                    </td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pages">{$list|raw}</div>
+</div>
+{/block}

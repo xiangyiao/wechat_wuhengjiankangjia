@@ -1,0 +1,15 @@
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        console.log(laydate);
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#company_create_date' //指定元素
+        });
+
+        laydate.render({
+            elem: '#company_create_date'
+            ,position: 'static'
+        });
+    });
+</script>

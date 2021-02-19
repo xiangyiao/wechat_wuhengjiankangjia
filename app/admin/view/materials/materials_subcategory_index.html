@@ -1,0 +1,40 @@
+{extend name="main" /}
+
+{block name="body"}
+{include file="breadcrumb" /}
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class=" layui-card-header layuiadmin-card-header-auto">
+            <form class="layui-form" method="get">
+                <input type="hidden" name="bcid" value="{:input('bcid')}"><!--保留当前位置的bcid参数-->
+            </form>
+        </div>
+        <div class="layui-card-body">
+            <table class="layui-table">
+                <tr>
+                    <th><b>子类目名称</b></th>
+                    <th><b>子类目序号</b></th>
+                    <th><b>子类目所属编码</b></th>
+                    <th><b>是否启用</b></th>
+                </tr>
+
+                <tbody>
+                {foreach name="list" item="vo"}
+                <tr>
+                    <td>{$vo.subcategory_name}</td>
+                    <td>{$vo.subcategory_number}</td>
+                    <td>{$vo.category_node}</td>
+                    {if($vo.status == '0')}
+                    <td style="background-color: red">{$vo.status_name}</td>
+                    {/if}
+                    {if($vo.status == '1')}
+                    <td style="background-color: greenyellow">{$vo.status_name}</td>
+                    {/if}
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,62 @@
+{extend name="iframe" /}
+{block name="body"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-form" lay-filter="layuiadmin-app-form-list" id="layuiadmin-app-form-list">
+            <form action="{:request()->url()}" method="post" class="xn_ajax" data-type="open">
+                <div>
+                    申购单总价：{$srm_apply_purchase_order_price}
+                </div>
+                <input style="display: none"  name="verify_status"  id="verify_status" value="">
+                <div class="layui-card-body">
+                    <table class="layui-table">
+                        <tr>
+                            <th><b>物料名称</b></th>
+                            <th><b>物料编号</b></th>
+                            <th><b>主类目</b></th>
+                            <th><b>子类目</b></th>
+                            <th><b>申购数量</b></th>
+                            <th><b>产品单价</b></th>
+                            <th><b>产品总价</b></th>
+                        </tr>
+                        <tbody>
+                        {foreach name="list" item="vo"}
+                        <tr>
+                            <td>{$vo.materials_name}</td>
+                            <td>{$vo.materials_number}</td>
+                            <td>{$vo.category_name}</td>
+                            <td>{$vo.subcategory_name}</td>
+                            <td>{$vo.num}</td>
+                            <td>{$vo.product_price}</td>
+                            <td>{$vo.product_price_all}</td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    申购备注：{$srm_apply_purchase_order_info.remark}
+                </div>
+                {if($check == 2)}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" lay-submit class="layui-btn" onclick="verifystatus(2)">审核通过</button>
+                        <button type="submit" lay-submit class="layui-btn" style="background-color: red" onclick="verifystatus(0)"> 审核驳回</button>
+                    </div>
+                </div>
+                {/if}
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    function verifystatus(status) {
+        layui.use('layer',function(){
+            $("#verify_status").attr("value",status);
+        });
+
+    }
+</script>
+{/block}
