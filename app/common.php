@@ -151,3 +151,12 @@ function make_hash($module_name,$id){
     $randNum = rand(1,1000);
     return md5($module_name.$id.$time.$ip.$randNum);
 }
+
+function writeLog($log_src,$log_content){
+    if (!file_exists($log_src)) {
+        //检查是否有该文件夹，如果没有就创建，并给予最高权限
+        mkdir($log_src, 777, true);
+    }
+    $log_name = date('Ymd').'.txt';
+    file_put_contents($log_src.$log_name,$log_content,FILE_APPEND);
+}

@@ -102,4 +102,34 @@ class AdminBase extends Base
         }
 
     }
+
+    /**
+     * 上传文件
+     *
+     */
+    function upyun_batch_upload($local_src_arr,$upyun_src_arr){
+        require_once ('/../vendor/upyun/vendor/autoload.php');
+        $upyunImg = \think\Config::get('upyun');  //服务器又开云配置
+        // 创建实例
+        $bucketConfig = new Config($upyunImg['user']['server'], $upyunImg['user']['username'],$upyunImg['user']['password']);
+        $client = new Upyun($bucketConfig);
+        $file_src_arr = [];
+
+        foreach ($local_src_arr as $k=>$v){
+            try{
+                // 读文件
+                $file = fopen($v, 'r');
+//                // 上传文件
+                $result = $client->write($upyun_src_arr[$k], $file);
+                if($result){
+                    $file_src_arr[$k] = $upyun_src_arr[$k];
+                }
+
+            }catch(\Exception $e){
+                //错误写入日志
+                writeLog(url('/') . 'static/log/file/error/','文件上传错误：' . "\r\n" . $e->getMessage() . "\r\n\r\n");
+            }
+        }
+        return $file_src_arr;
+    }
 }
