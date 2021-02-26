@@ -6,17 +6,18 @@
  * Time: 9:13
  */
 namespace app\api\controller;
+
 use app\BaseController;
+use app\common\controller\AdminBase;
 use tools\jwt\Token;  //封装命名空间\类
 use think\facade\Db;
 use think\facade\Request;
 use app\common\model\OsUser;
 
 
-class Login extends BaseController
+class Login extends AdminBase
 {
     public function login(){
-        config();
         $appid = config('wxprogramme.appid'); // 小程序APPID
         $secret = config('wxprogramme.secret'); // 小程序secret
         $code=$_GET['code'];
@@ -73,4 +74,14 @@ class Login extends BaseController
         return  json(['code' => 1, 'data' => ['user_info'=>$user_info], 'msg' => 'ok']);
     }
 
+    //修改信息
+    public function edit_user_info(){
+        $param = $this->request->param();
+        if(!empty($param['img'])) {
+            $file_url_arr = $this->file_batch_upload('file', 'motionindex', '1111', '3333', '2222');
+            if ($file_url_arr['code'] != 1) {
+                return $file_url_arr;
+            }
+        }
+    }
 }
